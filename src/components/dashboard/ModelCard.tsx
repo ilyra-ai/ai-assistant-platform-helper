@@ -1,116 +1,89 @@
-
 import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/Badge';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Database, Settings } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Settings, MoreHorizontal, Play, Pause, Clock } from 'lucide-react';
 
 interface ModelCardProps {
   name: string;
   description: string;
   type: 'text' | 'image' | 'voice' | 'multimodal';
   status: 'active' | 'inactive' | 'pending';
-  usage?: {
-    current: number;
-    total: number;
-  };
-  lastUpdated?: string;
-  className?: string;
-  onClick?: () => void;
+  usage: { current: number; total: number };
+  lastUpdated: string;
+  onClick: () => void;
 }
 
-export const ModelCard = ({
+export const ModelCard: React.FC<ModelCardProps> = ({
   name,
   description,
   type,
   status,
   usage,
   lastUpdated,
-  className,
-  onClick
-}: ModelCardProps) => {
-  const typeConfig = {
-    text: { icon: Database, label: 'Texto', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
-    image: { icon: Database, label: 'Imagem', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400' },
-    voice: { icon: Database, label: 'Voz', color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' },
-    multimodal: { icon: Database, label: 'Multimodal', color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
-  };
-  
+  onClick,
+}) => {
   const statusConfig = {
-    active: { variant: 'success' as const, label: 'Ativo', pulse: true },
-    inactive: { variant: 'danger' as const, label: 'Inativo', pulse: false },
-    pending: { variant: 'warning' as const, label: 'Pendente', pulse: true },
+    active: { variant: 'success' as const, label: 'Ativo' },
+    inactive: { variant: 'danger' as const, label: 'Inativo' },
+    pending: { variant: 'warning' as const, label: 'Pendente' },
   };
-  
-  const TypeIcon = typeConfig[type].icon;
-  
+
+  const typeConfig = {
+    text: { label: 'Texto', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
+    image: { label: 'Imagem', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400' },
+    voice: { label: 'Voz', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400' },
+    multimodal: { label: 'Multimodal', color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
+  };
+
   return (
-    <Card className={cn(
-      "overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer",
-      className
-    )} onClick={onClick}>
-      <CardHeader className="p-6 pb-4">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-              <TypeIcon className="h-4 w-4 text-primary" />
-            </div>
-            <div>
-              <CardTitle className="text-xl">{name}</CardTitle>
-              <CardDescription className="mt-1">{description}</CardDescription>
-            </div>
+    <Card className="h-full flex flex-col">
+      <CardContent className="space-y-2 flex-grow">
+        <div className="flex items-start justify-between">
+          <h3 className="text-lg font-semibold tracking-tight">{name}</h3>
+          <Button variant="ghost" size="icon">
+            <Settings className="h-4 w-4" />
+          </Button>
+        </div>
+        <p className="text-sm text-muted-foreground">{description}</p>
+        <div className="flex items-center justify-between">
+          <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${typeConfig[type].color}`}>
+            {typeConfig[type].label}
           </div>
-          <Badge 
-            variant={statusConfig[status].variant}
-            pulse={statusConfig[status].pulse}
-          >
+          <Badge variant={statusConfig[status].variant}>
             {statusConfig[status].label}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent className="p-6 pt-0">
-        <div className="flex flex-col space-y-2">
-          <div className="flex items-center">
-            <span className="text-sm font-medium">Tipo:</span>
-            <Badge className={cn("ml-2", typeConfig[type].color)}>
-              {typeConfig[type].label}
-            </Badge>
+        <div className="space-y-1">
+          <div className="flex items-center justify-between text-xs">
+            <span>Uso</span>
+            <span className="text-muted-foreground">
+              {usage.current} / {usage.total}
+            </span>
           </div>
-          {usage && (
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Uso</span>
-                <span className="font-medium">{usage.current} / {usage.total}</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
-                <div 
-                  className="h-full bg-primary rounded-full transition-all duration-500"
-                  style={{ width: `${(usage.current / usage.total) * 100}%` }}
-                />
-              </div>
-            </div>
-          )}
-          {lastUpdated && (
-            <p className="text-xs text-muted-foreground">
-              Atualizado: {lastUpdated}
-            </p>
-          )}
+          <Progress value={(usage.current / usage.total) * 100} />
         </div>
       </CardContent>
-      <CardFooter className="p-6 pt-0 flex justify-end">
-        <Button 
-          variant="outline"
-          size="sm"
-          className="transition-all duration-200 transform hover:scale-105"
-          onClick={(e) => {
-            e.stopPropagation();
-            // Add settings action here
-          }}
-        >
-          <Settings className="h-4 w-4 mr-2" />
-          Configurar
-        </Button>
+      <CardFooter className="flex items-center justify-between pt-4">
+        <div className="text-xs text-muted-foreground flex items-center">
+          <Clock className="h-3 w-3 mr-1" />
+          Atualizado {lastUpdated}
+        </div>
+        <div className="flex items-center space-x-2">
+          {status === 'active' ? (
+            <Button size="icon" variant="outline">
+              <Pause className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button size="icon" variant="outline">
+              <Play className="h-4 w-4" />
+            </Button>
+          )}
+          <Button size="icon" variant="ghost">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

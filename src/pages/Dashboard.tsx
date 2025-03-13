@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { StatCard } from '@/components/dashboard/StatCard';
@@ -15,7 +14,7 @@ import {
   CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/Badge';
+import { Badge } from '@/components/ui/badge';
 
 const Dashboard = () => {
   // Simulate API loading with a nice animation
