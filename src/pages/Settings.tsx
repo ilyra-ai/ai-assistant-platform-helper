@@ -28,7 +28,8 @@ import {
   Key,
   Mail,
   Smartphone,
-  FileText
+  FileText,
+  PlusCircle
 } from 'lucide-react';
 
 const Settings = () => {
@@ -247,7 +248,7 @@ const Settings = () => {
                       </div>
                       
                       <Button variant="outline" className="mt-4">
-                        <Plus className="h-4 w-4 mr-2" />
+                        <PlusCircle className="h-4 w-4 mr-2" />
                         Adicionar Membro
                       </Button>
                     </div>
