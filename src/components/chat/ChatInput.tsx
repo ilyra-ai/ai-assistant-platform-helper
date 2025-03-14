@@ -34,25 +34,25 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   return (
-    <div className="border-t bg-card p-4">
-      <div className="flex flex-col space-y-2">
+    <div className="w-full max-w-screen-md mx-auto border rounded-lg bg-background shadow-sm mb-8">
+      <div className="flex flex-col space-y-2 p-4">
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}
-          className="min-h-[80px] resize-none"
+          className="min-h-[60px] resize-none border-0 focus-visible:ring-0 focus-visible:ring-transparent"
         />
         <div className="flex justify-between items-center">
           <div className="flex space-x-2">
             {modelType === 'voice' || modelType === 'multimodal' ? (
-              <Button variant="outline" size="icon" type="button" disabled={isLoading}>
+              <Button variant="ghost" size="icon" type="button" disabled={isLoading}>
                 <Mic className="h-4 w-4" />
               </Button>
             ) : null}
             {modelType === 'image' || modelType === 'multimodal' ? (
-              <Button variant="outline" size="icon" type="button" disabled={isLoading}>
+              <Button variant="ghost" size="icon" type="button" disabled={isLoading}>
                 <Image className="h-4 w-4" />
               </Button>
             ) : null}
