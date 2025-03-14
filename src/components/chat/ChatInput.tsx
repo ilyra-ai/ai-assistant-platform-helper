@@ -2,7 +2,7 @@
 import React, { useState, KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { PaperPlaneIcon, Mic, Image, RefreshCw } from 'lucide-react';
+import { Send, Mic, Image, RefreshCw } from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -65,7 +65,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             {isLoading ? (
               <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
             ) : (
-              <PaperPlaneIcon className="h-4 w-4 mr-2" />
+              <Send className="h-4 w-4 mr-2" />
             )}
             Enviar
           </Button>
