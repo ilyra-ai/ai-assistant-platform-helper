@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { X, ArrowLeft } from 'lucide-react';
 
 type ChatLayoutProps = {
   children: React.ReactNode;
@@ -20,14 +20,15 @@ export const ChatLayout = ({ children }: ChatLayoutProps) => {
   return (
     <div className="min-h-screen w-full bg-background">
       {/* Close button (visible only on desktop) */}
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-4 left-4 z-20">
         <Button 
           variant="ghost" 
           size="icon" 
           onClick={handleClose}
           className="rounded-full"
         >
-          <X className="h-5 w-5" />
+          <ArrowLeft className="h-5 w-5" />
+          <span className="sr-only">Return to Dashboard</span>
         </Button>
       </div>
       

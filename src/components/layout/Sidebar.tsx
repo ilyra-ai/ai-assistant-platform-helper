@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 import { 
   Users, Settings, Home, Database, 
-  Network, Cog, DollarSign, BarChart3, Menu, X 
+  Network, Cog, DollarSign, BarChart3, Menu, X, MessageSquare 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -63,6 +63,7 @@ export function Sidebar() {
   
   const navItems = [
     { to: "/dashboard", icon: Home, label: "Dashboard" },
+    { to: "/chat", icon: MessageSquare, label: "Conversar" },
     { to: "/users", icon: Users, label: "Usuários" },
     { to: "/plans", icon: DollarSign, label: "Planos" },
     { to: "/models", icon: Database, label: "Modelos AI" },
