@@ -5,6 +5,7 @@ import { ChatMessage } from '@/components/chat/ChatMessage';
 import { ModelSelector } from '@/components/chat/ModelSelector';
 import { db, Conversation, Message, Model } from '@/lib/db';
 import { ChatLayout } from '@/components/layout/ChatLayout';
+import { ConversationList } from '@/components/chat/ConversationList';
 import { 
   MessageSquare, 
   Settings,
@@ -34,7 +35,6 @@ const Chat = () => {
   const { modelId } = useParams();
   const navigate = useNavigate();
   
-  // Estado
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -44,38 +44,29 @@ const Chat = () => {
   const [conversationTitle, setConversationTitle] = useState('');
   const [editingTitle, setEditingTitle] = useState(false);
   
-  // Ref para rolagem automática
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
-  // Carrega dados iniciais
   useEffect(() => {
-    // Carregar modelos
     const availableModels = db.getModels().filter(m => m.status === 'active');
     setModels(availableModels);
     
-    // Carregar conversas
     const userConversations = db.getConversations();
     setConversations(userConversations);
     
-    // Se um modelId foi fornecido na URL, cria uma nova conversa
     if (modelId) {
       const selectedModel = availableModels.find(m => m.id === parseInt(modelId));
       if (selectedModel) {
         createNewConversation(parseInt(modelId));
       }
-    } 
-    // Caso contrário, verifica se já existe alguma conversa
-    else if (userConversations.length > 0) {
+    } else if (userConversations.length > 0) {
       loadConversation(userConversations[0].id);
     }
   }, [modelId]);
   
-  // Rolagem automática quando novas mensagens são adicionadas
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   
-  // Carrega uma conversa existente
   const loadConversation = (conversationId: number) => {
     const conversation = db.getConversationById(conversationId);
     if (conversation) {
@@ -84,14 +75,11 @@ const Chat = () => {
       const conversationMessages = db.getMessagesByConversationId(conversationId);
       setMessages(conversationMessages);
       
-      // Atualiza a URL
       navigate(`/chat`);
     }
   };
   
-  // Cria uma nova conversa
   const createNewConversation = (modelId?: number) => {
-    // Se nenhum modelo foi especificado, usa o primeiro disponível
     const selectedModelId = modelId || models[0]?.id;
     
     if (!selectedModelId) {
@@ -104,7 +92,7 @@ const Chat = () => {
     const newConversation: Omit<Conversation, 'id'> = {
       title: `Nova conversa com ${selectedModel?.name || 'modelo desconhecido'}`,
       modelId: selectedModelId,
-      userId: 1, // Usuário fixo para demonstração
+      userId: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -115,10 +103,8 @@ const Chat = () => {
     setConversationTitle(createdConversation.title);
     setMessages([]);
     
-    // Atualiza a URL
     navigate(`/chat`);
     
-    // Mensagem de boas-vindas
     const welcomeMessage: Omit<Message, 'id'> = {
       conversationId: createdConversation.id,
       content: `Olá! Sou o assistente baseado no modelo ${selectedModel?.name}. Como posso ajudar você hoje?`,
@@ -131,13 +117,11 @@ const Chat = () => {
     setMessages([createdMessage]);
   };
   
-  // Exclui uma conversa
   const deleteConversation = (conversationId: number) => {
     db.deleteConversation(conversationId);
     const updatedConversations = conversations.filter(c => c.id !== conversationId);
     setConversations(updatedConversations);
     
-    // Se a conversa ativa foi excluída, carrega outra ou limpa
     if (activeConversation?.id === conversationId) {
       if (updatedConversations.length > 0) {
         loadConversation(updatedConversations[0].id);
@@ -150,14 +134,12 @@ const Chat = () => {
     toast.success('Conversa excluída');
   };
   
-  // Envia uma nova mensagem
   const handleSendMessage = (content: string) => {
     if (!activeConversation) {
       toast.error('Nenhuma conversa ativa');
       return;
     }
     
-    // Adiciona a mensagem do usuário
     const userMessage: Omit<Message, 'id'> = {
       conversationId: activeConversation.id,
       content,
@@ -169,10 +151,8 @@ const Chat = () => {
     const createdUserMessage = db.createMessage(userMessage);
     setMessages([...messages, createdUserMessage]);
     
-    // Simula resposta do assistente
     setIsLoading(true);
     
-    // Atualiza a lista de conversas
     const updatedConversation = db.getConversationById(activeConversation.id);
     if (updatedConversation) {
       setConversations(conversations.map(c => 
@@ -180,13 +160,11 @@ const Chat = () => {
       ));
     }
     
-    // Gera resposta simulada após um breve atraso
     setTimeout(() => {
       const selectedModel = db.getModelById(activeConversation.modelId);
       
       let responseContent = '';
       
-      // Conteúdo diferente baseado no tipo de modelo
       switch (selectedModel?.type) {
         case 'text':
           responseContent = generateTextResponse(content);
@@ -216,7 +194,6 @@ const Chat = () => {
       setMessages([...messages, createdUserMessage, createdAssistantMessage]);
       setIsLoading(false);
       
-      // Atualiza novamente a lista de conversas
       const updatedConversation = db.getConversationById(activeConversation.id);
       if (updatedConversation) {
         setConversations(conversations.map(c => 
@@ -226,9 +203,7 @@ const Chat = () => {
     }, 1500);
   };
   
-  // Gera uma resposta de texto simulada
   const generateTextResponse = (userMessage: string) => {
-    // Respostas simples para demonstração
     const lowerMessage = userMessage.toLowerCase();
     
     if (lowerMessage.includes('olá') || lowerMessage.includes('oi') || lowerMessage.includes('hey')) {
@@ -251,11 +226,9 @@ const Chat = () => {
       return "Aqui está um exemplo de código JavaScript para uma função simples:\n\n```javascript\nfunction somar(a, b) {\n  return a + b;\n}\n\nconst resultado = somar(5, 3);\nconsole.log(resultado); // 8\n```\n\nEspero que isso ajude! Posso explicar mais detalhadamente se necessário.";
     }
     
-    // Resposta genérica para outros casos
     return "Entendi sua mensagem. Como assistente de IA, estou aqui para fornecer informações e ajudar com suas dúvidas. Por favor, me diga como posso ser útil para você.";
   };
   
-  // Atualiza o título da conversa
   const updateConversationTitle = () => {
     if (!activeConversation) return;
     
@@ -268,7 +241,6 @@ const Chat = () => {
     toast.success('Título atualizado');
   };
   
-  // Altera o modelo da conversa ativa
   const handleModelChange = (modelId: number) => {
     if (!activeConversation) return;
     
@@ -277,7 +249,6 @@ const Chat = () => {
     
     const selectedModel = db.getModelById(modelId);
     
-    // Mensagem de transição
     const transitionMessage: Omit<Message, 'id'> = {
       conversationId: activeConversation.id,
       content: `Modelo alterado para ${selectedModel?.name}. Como posso ajudar você?`,
@@ -292,7 +263,6 @@ const Chat = () => {
     toast.success(`Modelo alterado para ${selectedModel?.name}`);
   };
   
-  // Obtém o modelo ativo
   const activeModel = activeConversation 
     ? models.find(m => m.id === activeConversation.modelId)
     : null;
@@ -300,7 +270,6 @@ const Chat = () => {
   return (
     <ChatLayout>
       <div className="flex h-screen flex-col overflow-hidden">
-        {/* Cabeçalho */}
         <div className="border-b p-4 flex items-center justify-between bg-background z-10">
           <div className="flex items-center">
             <Button
@@ -332,9 +301,7 @@ const Chat = () => {
           </div>
         </div>
         
-        {/* Conteúdo principal */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar */}
           <div
             className={cn(
               "border-r bg-muted/40 w-64 flex-shrink-0 transition-all duration-300 ease-in-out overflow-hidden",
@@ -351,11 +318,9 @@ const Chat = () => {
             />
           </div>
           
-          {/* Área de mensagens */}
           <div className="flex-1 flex flex-col overflow-hidden">
             {activeConversation ? (
               <>
-                {/* Barra do modelo selecionado */}
                 <div className="border-b p-3 bg-background flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-1 max-w-screen-md mx-auto w-full px-4">
                     {editingTitle ? (
@@ -399,7 +364,6 @@ const Chat = () => {
                   </div>
                 </div>
               
-                {/* Lista de mensagens */}
                 <div className="flex-1 overflow-y-auto bg-background">
                   {messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center p-8">
@@ -433,7 +397,6 @@ const Chat = () => {
                   )}
                 </div>
                 
-                {/* Entrada de mensagem */}
                 <div className="px-4 py-4 bg-background border-t">
                   <ChatInput 
                     onSendMessage={handleSendMessage}
@@ -443,7 +406,6 @@ const Chat = () => {
                 </div>
               </>
             ) : (
-              // Estado vazio - nenhuma conversa selecionada
               <div className="flex flex-col items-center justify-center h-full p-8 bg-muted/10">
                 <div className="max-w-md text-center">
                   <MessageSquare className="h-12 w-12 text-primary mx-auto mb-4" />
