@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChatInput } from '@/components/chat/ChatInput';
@@ -36,7 +37,7 @@ const Chat = () => {
         {
           id: 0,
           conversationId: 0,
-          content: "Como posso ajudar?",
+          content: "Como posso ajudar hoje?",
           role: 'assistant',
           timestamp: new Date().toISOString(),
           modelId: 1
@@ -193,7 +194,7 @@ const Chat = () => {
         <div className="flex-1 h-full">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center p-8">
-              <h3 className="text-3xl font-medium mb-6 text-gray-800">
+              <h3 className="text-2xl font-medium mb-6 text-gray-800">
                 Como posso ajudar?
               </h3>
             </div>
@@ -211,7 +212,7 @@ const Chat = () => {
           )}
         </div>
         
-        <div className="sticky bottom-0 p-4 bg-white">
+        <div className="sticky bottom-0 p-4 bg-white border-t">
           <ChatInput 
             onSendMessage={handleSendMessage}
             isLoading={isLoading}

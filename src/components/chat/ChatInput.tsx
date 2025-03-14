@@ -2,7 +2,7 @@
 import React, { useState, KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Search, Sparkles, Mic } from 'lucide-react';
+import { Plus, Search, Sparkles, Mic, Send } from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -14,7 +14,7 @@ interface ChatInputProps {
 export const ChatInput: React.FC<ChatInputProps> = ({
   onSendMessage,
   isLoading = false,
-  placeholder = "Pergunte alguma coisa",
+  placeholder = "Message ChatGPT...",
   modelType = 'text'
 }) => {
   const [message, setMessage] = useState('');
@@ -42,7 +42,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={isLoading}
-          className="min-h-[56px] max-h-[200px] py-3 pl-14 pr-10 resize-none border-0 focus-visible:ring-0 focus-visible:ring-transparent bg-transparent rounded-2xl"
+          className="min-h-[56px] max-h-[200px] py-3 pl-14 pr-14 resize-none border-0 focus-visible:ring-0 focus-visible:ring-transparent bg-transparent rounded-2xl"
         />
         <div className="absolute left-3 bottom-3 flex space-x-1">
           <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-[#F6F6F7]">
@@ -50,18 +50,32 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           </Button>
         </div>
         <div className="absolute right-3 bottom-3 flex items-center space-x-1">
-          <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-[#F6F6F7]">
-            <Search className="h-5 w-5 text-[#8E9196]" />
-            <span className="sr-only">Buscar</span>
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-[#F6F6F7]">
-            <Sparkles className="h-5 w-5 text-[#8E9196]" />
-            <span className="sr-only">Investigar</span>
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 bg-black hover:bg-gray-800">
-            <Mic className="h-5 w-5 text-white" />
-            <span className="sr-only">Mic</span>
-          </Button>
+          {message.trim() ? (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="rounded-full h-8 w-8 bg-[#19C37D] hover:bg-[#18A56B]"
+              onClick={handleSend}
+            >
+              <Send className="h-5 w-5 text-white" />
+              <span className="sr-only">Send</span>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-[#F6F6F7]">
+                <Search className="h-5 w-5 text-[#8E9196]" />
+                <span className="sr-only">Search</span>
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-[#F6F6F7]">
+                <Sparkles className="h-5 w-5 text-[#8E9196]" />
+                <span className="sr-only">Sparkles</span>
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 bg-black hover:bg-gray-800">
+                <Mic className="h-5 w-5 text-white" />
+                <span className="sr-only">Mic</span>
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <div className="text-xs text-center mt-2 text-[#8E9196]">

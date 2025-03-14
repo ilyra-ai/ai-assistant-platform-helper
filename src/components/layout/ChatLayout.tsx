@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, PenSquare } from 'lucide-react';
+import { PenSquare, MessageCircle, Plus } from 'lucide-react';
 
 type ChatLayoutProps = {
   children: React.ReactNode;
@@ -18,93 +18,65 @@ export const ChatLayout = ({ children }: ChatLayoutProps) => {
   };
   
   return (
-    <div className="flex min-h-screen bg-[#F6F6F7]">
+    <div className="flex min-h-screen bg-white">
       {/* Sidebar with conversation list */}
-      <div className="w-[260px] bg-white border-r border-[#F1F1F1] flex flex-col h-screen">
+      <div className="w-[260px] bg-[#202123] border-r border-[#4D4D4F] flex flex-col h-screen">
         {/* Top section with new chat button */}
-        <div className="p-3 flex items-center gap-2">
+        <div className="p-3">
           <Button 
             variant="outline" 
             size="sm" 
-            className="w-full flex items-center justify-start gap-2 text-[#403E43]"
+            className="w-full flex items-center justify-start gap-2 text-white bg-transparent border-[#4D4D4F] hover:bg-[#343541]"
             onClick={() => navigate('/chat')}
           >
-            <PenSquare className="h-4 w-4" />
-            <span>ChatGPT 4o</span>
+            <Plus className="h-4 w-4" />
+            <span>New Chat</span>
           </Button>
         </div>
 
         {/* Conversations list */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto px-2 py-2">
           <div className="px-2">
-            {/* Static conversation items for demo */}
+            {/* Recent conversations section */}
+            <div className="text-xs font-medium text-gray-500 px-2 py-2 uppercase">
+              Recent
+            </div>
+            
+            {/* Conversation items */}
             <ConversationItem active label="ChatGPT" />
-            <ConversationItem label="Sora" />
-            <ConversationItem label="Mapa Astral Védico: ..." />
-            <ConversationItem label="Lyra - Análise de For..." />
-            <ConversationItem label="Análise de Doenças ..." />
-            <ConversationItem label="LYRA DM – O Ma..." />
-            <ConversationItem label="Explorar GPTs" />
+            <ConversationItem label="Rapé e Sopro Ideal" />
+            <ConversationItem label="Manual de Compliance" />
+            <ConversationItem label="Mapa Astral Védico" />
+            <ConversationItem label="Análise de Doenças" />
             
-            {/* Projects header */}
-            <div className="py-3 px-2 text-sm font-medium text-[#8A898C]">
-              Projetos
+            {/* Previous conversations section */}
+            <div className="text-xs font-medium text-gray-500 px-2 py-2 mt-4 uppercase">
+              Previous 7 Days
             </div>
             
-            {/* Project item */}
-            <div className="flex items-center gap-2 p-2 rounded-md hover:bg-[#F6F6F7] cursor-pointer text-[#403E43]">
-              <PenSquare className="h-4 w-4" />
-              <span className="text-sm">Novo projeto</span>
-            </div>
-            
-            {/* Today section */}
-            <div className="py-3 px-2 text-sm font-medium text-[#8A898C]">
-              Hoje
-            </div>
-            
-            {/* Today items */}
-            <div className="flex flex-col gap-1">
-              <div className="p-2 rounded-md hover:bg-[#F6F6F7] cursor-pointer text-sm text-[#403E43]">
-                Rapé e Sopro Ideal
-              </div>
-              <div className="p-2 rounded-md hover:bg-[#F6F6F7] cursor-pointer text-sm text-[#403E43]">
-                Manual de Compliance Detali
-              </div>
-            </div>
+            {/* Additional conversations */}
+            <ConversationItem label="Design System Review" />
+            <ConversationItem label="Product Planning" />
+            <ConversationItem label="Marketing Strategy" />
           </div>
+        </div>
+        
+        {/* Bottom section */}
+        <div className="p-3 border-t border-[#4D4D4F]">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="w-full flex items-center justify-start gap-2 text-white hover:bg-[#343541]"
+            onClick={() => navigate('/dashboard')}
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span>Dashboard</span>
+          </Button>
         </div>
       </div>
       
       {/* Main chat area */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        {/* Chat header */}
-        <div className="flex items-center justify-between p-2 border-b bg-white">
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={handleClose}
-              className="rounded-md hover:bg-[#F6F6F7]"
-            >
-              <Search className="h-5 w-5 text-[#8E9196]" />
-              <span className="sr-only">Search</span>
-            </Button>
-          </div>
-          
-          <div className="flex items-center">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs bg-white text-[#8E9196] border-[#eee] mr-2"
-            >
-              Temporário
-            </Button>
-            <div className="h-8 w-8 rounded-full bg-orange-600 flex items-center justify-center text-white">
-              d
-            </div>
-          </div>
-        </div>
-        
+      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-white">
         {/* Main chat content */}
         <main className="flex-1 overflow-auto">
           {children}
@@ -119,18 +91,12 @@ const ConversationItem = ({ label, active = false }: { label: string; active?: b
   return (
     <div 
       className={cn(
-        "flex items-center gap-2 p-2 rounded-md cursor-pointer",
-        active ? "bg-[#F6F6F7]" : "hover:bg-[#F6F6F7]"
+        "flex items-center gap-2 p-2 rounded-md cursor-pointer text-gray-300 mb-1 hover:bg-[#343541]",
+        active ? "bg-[#343541]" : ""
       )}
     >
-      <div className={cn(
-        "h-6 w-6 rounded-full flex items-center justify-center",
-        active ? "bg-[#0B96F0] text-white" : "bg-[#F1F1F1] text-[#8E9196]"
-      )}>
-        {label.substring(0, 1)}
-      </div>
-      <span className="text-sm text-[#403E43]">{label}</span>
+      <MessageCircle className="h-4 w-4" />
+      <span className="text-sm truncate">{label}</span>
     </div>
   );
 };
-
