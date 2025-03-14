@@ -1,6 +1,7 @@
 
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import React from "react"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -12,7 +13,7 @@ export function containsCodeBlock(text: string): boolean {
 }
 
 // Função para formatar código em blocos de código
-export function formatCodeBlocks(text: string): JSX.Element[] {
+export function formatCodeBlocks(text: string): React.ReactNode[] {
   if (!containsCodeBlock(text)) {
     return [<p key="0">{text}</p>]
   }
