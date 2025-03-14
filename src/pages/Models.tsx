@@ -177,6 +177,7 @@ const Models = () => {
           {filteredModels.map((model) => (
             <ModelCard
               key={model.id}
+              id={model.id}
               name={model.name}
               description={model.description}
               type={model.type}

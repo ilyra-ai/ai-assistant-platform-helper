@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Settings, MoreHorizontal, Play, Pause, Clock } from 'lucide-react';
+import { Settings, MoreHorizontal, Play, Pause, Clock, MessageSquare } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ModelCardProps {
   name: string;
@@ -13,6 +15,7 @@ interface ModelCardProps {
   usage: { current: number; total: number };
   lastUpdated: string;
   onClick: () => void;
+  id?: number; // Adicionando ID opcional para o link do chat
 }
 
 export const ModelCard: React.FC<ModelCardProps> = ({
@@ -23,6 +26,7 @@ export const ModelCard: React.FC<ModelCardProps> = ({
   usage,
   lastUpdated,
   onClick,
+  id,
 }) => {
   const statusConfig = {
     active: { variant: 'success' as const, label: 'Ativo' },
@@ -71,6 +75,13 @@ export const ModelCard: React.FC<ModelCardProps> = ({
           Atualizado {lastUpdated}
         </div>
         <div className="flex items-center space-x-2">
+          {status === 'active' && id && (
+            <Button size="icon" variant="outline" asChild>
+              <Link to={`/chat/${id}`}>
+                <MessageSquare className="h-4 w-4" />
+              </Link>
+            </Button>
+          )}
           {status === 'active' ? (
             <Button size="icon" variant="outline">
               <Pause className="h-4 w-4" />

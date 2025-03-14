@@ -11,6 +11,7 @@ import Users from "./pages/Users";
 import Models from "./pages/Models";
 import Plans from "./pages/Plans";
 import Settings from "./pages/Settings";
+import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/models" element={<Models />} />
             <Route path="/plans" element={<Plans />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/chat/:modelId?" element={<Chat />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
