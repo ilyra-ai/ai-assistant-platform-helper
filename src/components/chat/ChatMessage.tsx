@@ -39,7 +39,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
         <div className="flex-1 space-y-2 overflow-hidden">
           <div className={cn(
-            "prose-sm prose-p:leading-relaxed prose-pre:p-0",
+            "prose-sm prose-p:leading-relaxed prose-pre:p-0 text-gray-800",
           )}>
             {formatCodeBlocks(message.content)}
           </div>

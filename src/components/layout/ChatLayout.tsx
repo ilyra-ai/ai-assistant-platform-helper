@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { PenSquare, MessageCircle, Plus } from 'lucide-react';
+import { PenSquare, MessageCircle, Plus, Settings } from 'lucide-react';
 
 type ChatLayoutProps = {
   children: React.ReactNode;
@@ -20,13 +20,13 @@ export const ChatLayout = ({ children }: ChatLayoutProps) => {
   return (
     <div className="flex min-h-screen bg-white">
       {/* Sidebar with conversation list */}
-      <div className="w-[260px] bg-[#202123] border-r border-[#4D4D4F] flex flex-col h-screen">
+      <div className="w-[260px] bg-[#f7f7f8] border-r border-[#e5e5e5] flex flex-col h-screen">
         {/* Top section with new chat button */}
         <div className="p-3">
           <Button 
             variant="outline" 
             size="sm" 
-            className="w-full flex items-center justify-start gap-2 text-white bg-transparent border-[#4D4D4F] hover:bg-[#343541]"
+            className="w-full flex items-center justify-start gap-2 text-gray-700 bg-white border-[#e5e5e5] hover:bg-gray-50"
             onClick={() => navigate('/chat')}
           >
             <Plus className="h-4 w-4" />
@@ -62,15 +62,24 @@ export const ChatLayout = ({ children }: ChatLayoutProps) => {
         </div>
         
         {/* Bottom section */}
-        <div className="p-3 border-t border-[#4D4D4F]">
+        <div className="p-3 border-t border-[#e5e5e5]">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="w-full flex items-center justify-start gap-2 text-white hover:bg-[#343541]"
+            className="w-full flex items-center justify-start gap-2 text-gray-700 hover:bg-gray-100"
             onClick={() => navigate('/dashboard')}
           >
             <MessageCircle className="h-4 w-4" />
             <span>Dashboard</span>
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="w-full flex items-center justify-start gap-2 text-gray-700 hover:bg-gray-100 mt-1"
+            onClick={() => navigate('/settings')}
+          >
+            <Settings className="h-4 w-4" />
+            <span>Settings</span>
           </Button>
         </div>
       </div>
@@ -91,8 +100,8 @@ const ConversationItem = ({ label, active = false }: { label: string; active?: b
   return (
     <div 
       className={cn(
-        "flex items-center gap-2 p-2 rounded-md cursor-pointer text-gray-300 mb-1 hover:bg-[#343541]",
-        active ? "bg-[#343541]" : ""
+        "flex items-center gap-2 p-2 rounded-md cursor-pointer text-gray-700 mb-1 hover:bg-gray-100",
+        active ? "bg-gray-100" : ""
       )}
     >
       <MessageCircle className="h-4 w-4" />
