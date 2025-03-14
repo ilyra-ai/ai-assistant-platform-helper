@@ -34,7 +34,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       </div>
       <div className="flex-1 space-y-2">
         <div className="prose-sm prose-p:leading-relaxed prose-pre:p-0">
-          {/* Use the formatCodeBlocks utility function */}
           {formatCodeBlocks(message.content)}
         </div>
         <div className="flex items-center gap-2">
