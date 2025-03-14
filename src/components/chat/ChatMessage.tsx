@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { MessageSquare, Bot } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, formatCodeBlocks } from '@/lib/utils';
 import { Message } from '@/lib/db';
 
 interface ChatMessageProps {
@@ -34,34 +34,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       </div>
       <div className="flex-1 space-y-2">
         <div className="prose-sm prose-p:leading-relaxed prose-pre:p-0">
-          {/* Renderiza código de forma especial */}
-          {message.content.includes('```') ? (
-            <div>
-              {message.content.split('```').map((part, index) => {
-                if (index % 2 === 0) {
-                  return (
-                    <div key={index} className="whitespace-pre-wrap">
-                      {part}
-                    </div>
-                  );
-                } else {
-                  const [language, ...code] = part.split('\n');
-                  return (
-                    <pre 
-                      key={index} 
-                      className="mt-2 mb-2 rounded-md bg-muted p-4 overflow-x-auto text-sm"
-                    >
-                      <code className="whitespace-pre">
-                        {code.join('\n')}
-                      </code>
-                    </pre>
-                  );
-                }
-              })}
-            </div>
-          ) : (
-            <div className="whitespace-pre-wrap">{message.content}</div>
-          )}
+          {/* Use the formatCodeBlocks utility function */}
+          {formatCodeBlocks(message.content)}
         </div>
         <div className="flex items-center gap-2">
           <div className="text-xs text-muted-foreground">

@@ -15,7 +15,7 @@ export function containsCodeBlock(text: string): boolean {
 // Função para formatar código em blocos de código
 export function formatCodeBlocks(text: string): React.ReactNode[] {
   if (!containsCodeBlock(text)) {
-    return [<p key="0">{text}</p>]
+    return [React.createElement('p', { key: "0" }, text)]
   }
 
   const segments = text.split(/(```[\s\S]*?```)/g)
@@ -34,13 +34,16 @@ export function formatCodeBlocks(text: string): React.ReactNode[] {
         code = codeContent.slice(firstLineBreakIndex + 1)
       }
       
-      return (
-        <pre key={index} className="mt-2 mb-2 rounded-md bg-muted p-4 overflow-x-auto text-sm">
-          <code className="whitespace-pre">{code}</code>
-        </pre>
+      return React.createElement(
+        'pre', 
+        { 
+          key: index, 
+          className: "mt-2 mb-2 rounded-md bg-muted p-4 overflow-x-auto text-sm" 
+        },
+        React.createElement('code', { className: "whitespace-pre" }, code)
       )
     }
     
-    return <p key={index} className="whitespace-pre-wrap">{segment}</p>
+    return React.createElement('p', { key: index, className: "whitespace-pre-wrap" }, segment)
   })
 }
