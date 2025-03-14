@@ -1,15 +1,13 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Layout } from '@/components/layout/Layout';
 import { ChatInput } from '@/components/chat/ChatInput';
 import { ChatMessage } from '@/components/chat/ChatMessage';
-import { ConversationList } from '@/components/chat/ConversationList';
 import { ModelSelector } from '@/components/chat/ModelSelector';
 import { db, Conversation, Message, Model } from '@/lib/db';
+import { ChatLayout } from '@/components/layout/ChatLayout';
 import { 
   MessageSquare, 
-  Settings, 
+  Settings,
   PanelLeft, 
   Loader2,
   Bot,
@@ -28,10 +26,9 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const Chat = () => {
   const { modelId } = useParams();
@@ -301,8 +298,8 @@ const Chat = () => {
     : null;
   
   return (
-    <Layout>
-      <div className="flex h-[calc(100vh-85px)] flex-col overflow-hidden">
+    <ChatLayout>
+      <div className="flex h-screen flex-col overflow-hidden">
         {/* Cabeçalho */}
         <div className="border-b p-4 flex items-center justify-between bg-background z-10">
           <div className="flex items-center">
@@ -501,7 +498,7 @@ const Chat = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </ChatLayout>
   );
 };
 

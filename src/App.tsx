@@ -42,6 +42,7 @@ const App = () => {
             <Route path="/models" element={<Models />} />
             <Route path="/plans" element={<Plans />} />
             <Route path="/settings" element={<Settings />} />
+            {/* The chat route now uses its own independent layout */}
             <Route path="/chat/:modelId?" element={<Chat />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
