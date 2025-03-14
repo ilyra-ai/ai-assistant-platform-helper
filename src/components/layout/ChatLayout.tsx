@@ -18,14 +18,14 @@ export const ChatLayout = ({ children }: ChatLayoutProps) => {
   };
   
   return (
-    <div className="min-h-screen w-full bg-background">
-      {/* Close button (visible only on desktop) */}
+    <div className="min-h-screen w-full bg-gradient-to-b from-background to-background/95">
+      {/* Back button with subtle styling */}
       <div className="absolute top-4 left-4 z-20">
         <Button 
           variant="ghost" 
           size="icon" 
           onClick={handleClose}
-          className="rounded-full"
+          className="rounded-full hover:bg-primary/10 transition-all duration-300"
         >
           <ArrowLeft className="h-5 w-5" />
           <span className="sr-only">Return to Dashboard</span>
